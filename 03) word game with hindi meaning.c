@@ -288,7 +288,7 @@ void permanent_computer_data()
   fprintf("Wrong Word --> Point-5.\n");
   */
 	count_call_in_computer++;
-	if (wrong == MAX_ERRORS)
+	if (wrong == MAX_ERRORS + 1) /*EDIT:*/ //+1 because till max_errors, user can play and after any further error program will terminated
 		fprintf(ptr, "\n\n");
 	fclose(ptr);
 }
@@ -319,7 +319,7 @@ void permanent_user_data()
 		fprintf(ptr, "Wrong Word --> Point will -2.\n");
 
 	count_call_in_user++;
-	if (wrong == MAX_ERRORS)
+	if (wrong == MAX_ERRORS + 1) /*EDIT:*/ //+1 because till max_errors, user can play and after any further error program will terminated
 		fprintf(ptr, "\n\n");
 	fclose(ptr);
 }
@@ -578,11 +578,11 @@ void leaderboard()
 	if (user_rank < 10)
 	{
 		if (user_rank == 1)
-			puts("====EXCELLENT AWESOME SUPEREB MINDBLOWING KING====\nYou are topper and GOLD MEDAL");
+			puts("====EXCELLENT AWESOME SUPEREB MINDBLOWING KING====\nYou are topper and you are rewarded by GOLD MEDAL");
 		else if (user_rank == 2)
-			puts("====NICE  AWESOME VERY GOOD====\nYou are 2nd topper and SILVER MEDAL");
+			puts("====NICE  AWESOME VERY GOOD====\nYou are 2nd topper and you are rewarded by SILVER MEDAL");
 		else if (user_rank == 3)
-			puts("====GOOD NICE====\nYou are 3rd topper and BRONZE MEDAL");
+			puts("====GOOD NICE====\nYou are 3rd topper and you are rewarded by BRONZE MEDAL");
 		else
 			puts("====GOOD====\nYou are in Top 10.");
 	}
