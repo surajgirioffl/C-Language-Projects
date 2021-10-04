@@ -34,6 +34,7 @@ int check_user_word();
 void hindi_meaning();
 void leaderboard();
 void arrange_result_database();
+void show_temp_word_history();
 
 //{
 //========Starting of main()==========
@@ -84,9 +85,16 @@ int main()
 	//game started
 	while (1)
 	{
-		printf("\n\033[1;31m%02d.\033[0m It's\033[1;36m %s \033[0mTurn. So, Write your word:\n", no_of_word_enter_by_user, user_name);
-		magenta('f');
-		gets(user_word);
+		while (1)
+		{
+			printf("\n\033[1;31m%02d.\033[0m It's\033[1;36m %s \033[0mTurn. So, Write your word:\n", no_of_word_enter_by_user, user_name);
+			magenta('f');
+			gets(user_word);
+			if (user_word[0] == '#')
+				show_temp_word_history();
+			else
+				break;
+		}
 		no_of_word_enter_by_user++;
 		reset();
 		uppercase(user_word);
@@ -471,6 +479,7 @@ void game_conditions()
 	red('f');
 	printf("5. 2 points will deducted for each wrong word. and maximum %d wrong words are allowed in game.\n", MAX_ERRORS);
 	reset();
+	printf("6. Press '#' anytime at the place of typing word to see history of word by you and computer in current game.\n");
 }
 
 int check_user_word()
@@ -691,4 +700,24 @@ void arrange_result_database()
 	fclose(ptr);
 	free(p);
 	free(p2);
+}
+
+void show_temp_word_history()
+{
+	advcolor('b', 169); //for white background color
+	advcolor('f', 232); //for black foreground color
+	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/temp_user_computer_word", "r");
+	if (ptr == NULL)
+		puts("sorry. No history available till now.");
+	else
+	{
+		puts("===History of words are following:===");
+		while (feof(ptr) == 0)
+		{
+			int ch = fgetc(ptr);
+			printf("%c", ch);
+		}
+		puts("\n===End of history.===");
+	}
+	reset();
 }
