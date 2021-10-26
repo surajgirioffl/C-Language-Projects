@@ -15,7 +15,10 @@ void display_result(int lucky_choice);
 
 int main()
 {
+    green('f');
     terms_and_conditions();
+    reset();
+
     char name[30];
     int question_choice;
     int lucky_choice;
