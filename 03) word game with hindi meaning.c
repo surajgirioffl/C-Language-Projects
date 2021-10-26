@@ -1,11 +1,11 @@
 //{
 #define MAX_ERRORS 5
-//means 5 error allowed to user
+//means maximum 5 errors are allowed to user
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include "/storage/emulated/0/All C Programs/1) Cxxdroid Application/Header Files/color.h"
+#include "D:\C Language\All C Programs\1) Cxxdroid Application\Header Files\color.h"
 
 //Global variables
 int score;
@@ -69,7 +69,7 @@ int main()
 	fflush(stdin);
 
 	//removing file if exist in one condition abnormal termination else it will auto remove in last becuase it's last line of code in main()'
-	remove("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/temp_user_computer_word");
+	remove("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\temp_user_computer_word");
 
 	system("cls");
 	puts("Please write your name:");
@@ -163,16 +163,16 @@ int main()
 	score_saver(); //to save the score of user in database
 	leaderboard(); //to show leaderboard and position of user in leaderboard along with prizes
 
-	remove("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/temp_user_computer_word");
+	remove("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\temp_user_computer_word");
 } //end of main()
 
 void score_saver() //a+ is well working
 {
 	FILE *ptr;
-	ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/result.txt", "a"); //to create file first time (work if file not exist. if we use another mode then there is lots of issues)
+	ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\result.txt", "a"); //to create file first time (work if file not exist. if we use another mode then there is lots of issues)
 	fclose(ptr);
 
-	ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/result.txt", "r+");
+	ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\result.txt", "r+");
 	if (ptr == NULL)
 	{
 		perror("Sorry, Unable to access score_saver database now. Error code 121.");
@@ -196,7 +196,7 @@ void score_saver() //a+ is well working
 
 char *computer_turn(char ch)
 {
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/english_word.csv", "r");
+	FILE *ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\Dictionary\english_word.csv", "r");
 	if (ptr == NULL)
 	{
 		perror("Database is not reachable right now. Error code 111");
@@ -235,7 +235,7 @@ char *computer_turn(char ch)
 int search_from_temp_data(char string[])
 {
 	count_in_temp = 0;
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/temp_user_computer_word", "r");
+	FILE *ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\temp_user_computer_word", "r");
 	if (ptr == NULL)
 	{
 		perror("Unable to access database to check word temporiraly. Error Code 105");
@@ -260,7 +260,7 @@ int search_from_temp_data(char string[])
 
 void temp_user_computer_word()
 {
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/temp_user_computer_word", "a");
+	FILE *ptr = fopen("D:\C Language\All C Programs/1) Cxxdroid Application/File IO in C/word game/temp_user_computer_word", "a");
 	if (ptr == NULL)
 	{
 		perror("Unable to access database to save word temporiraly. Exit Code 106");
@@ -273,7 +273,7 @@ void temp_user_computer_word()
 void permanent_computer_data()
 {
 	FILE *ptr;
-	ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/permanent_computer_data", "a");
+	ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\permanent_computer_data", "a");
 	if (ptr == 0)
 	{
 		red('f');
@@ -304,7 +304,7 @@ void permanent_computer_data()
 void permanent_user_data()
 {
 	FILE *ptr;
-	ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/permanent_user_data", "a");
+	ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\permanent_user_data", "a");
 	if (ptr == 0)
 	{
 		red('f');
@@ -338,7 +338,7 @@ int search_from_dictionary(char string[])
 	unsigned long word_number;
 	char word_from_file[100];
 
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/english_word.csv", "r");
+	FILE *ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\Dictionary\english_word.csv", "r");
 	if (ptr == NULL)
 	{
 		perror("Database is not reachable right now. Error code 101");
@@ -503,7 +503,7 @@ void hindi_meaning()
 
 	if (required_word_number < 91922)
 	{
-		ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/hindi_word_1.csv", "r");
+		ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\Dictionary\hindi_word_1.csv", "r");
 		if (ptr == NULL)
 		{
 			perror("Database is not reachable right now. Error code 151");
@@ -522,7 +522,7 @@ void hindi_meaning()
 
 	else if (required_word_number < 183119)
 	{
-		ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/hindi_word_2.csv", "r");
+		ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\Dictionary\hindi_word_2.csv", "r");
 		if (ptr == NULL)
 		{
 			red('f');
@@ -561,7 +561,7 @@ void leaderboard()
 	int user_rank;
 
 	//file contains index then score then name in a ordered way
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/ordered_leaderboard.txt", "r");
+	FILE *ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\ordered_leaderboard.txt", "r");
 	if (ptr == NULL)
 	{
 		perror("unable to access leaderboard. exit code 108");
@@ -625,7 +625,7 @@ void leaderboard()
 
 void arrange_result_database()
 {
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/result.txt", "r");
+	FILE *ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\result.txt", "r");
 	if (ptr == NULL)
 	{
 		perror("unable to access leaderboard. exit code 107");
@@ -692,7 +692,7 @@ void arrange_result_database()
 	}
 
 	//now making new file to print the order data
-	ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/ordered_leaderboard.txt", "w");
+	ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\ordered_leaderboard.txt", "w");
 
 	for (int i = 0; i < max_index; i++)
 		fprintf(ptr, "%d\t%d\t%s", i + 1, p[i], p2[i]);
@@ -706,7 +706,7 @@ void show_temp_word_history()
 {
 	advcolor('b', 169); //for white background color
 	advcolor('f', 232); //for black foreground color
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/word game/temp_user_computer_word", "r");
+	FILE *ptr = fopen("D:\C Language\All C Programs\1) Cxxdroid Application\File IO in C\word game\temp_user_computer_word", "r");
 	if (ptr == NULL)
 		puts("sorry. No history available till now.");
 	else
