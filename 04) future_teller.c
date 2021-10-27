@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 #include "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\Header Files\\color.h"
 
 void terms_and_conditions();
@@ -44,6 +45,7 @@ int main()
     save_user(name, question_choice);
 
     puts("\nPlease select any one number from following peacefully after remembering GOD: (कृपया प्रभु का स्मरण करके शांतिपूर्वक निम्नलिखित में से किसी एक नंबर का चयन करें:)");
+    Beep(1000, 2000);   //Beep(frequnecy, time_in_millisecond);     //for playing a beep sound
     selection_matrix(); //function to print tisha yantra
     printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
     scanf("%d", &lucky_choice);
