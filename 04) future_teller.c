@@ -13,6 +13,8 @@ int calculation_part(int a, int b);
 void chakra_name_finder(int chakra_no);
 char chakra_name[50];
 void display_result(int lucky_choice);
+void save_result(char *name, int choice);
+char result[400];
 
 int main()
 {
@@ -55,6 +57,7 @@ int main()
     chakra_name_finder(chakra_no);
 
     display_result(lucky_choice);
+    save_result(name, question_choice);
     return 0;
 }
 
@@ -116,7 +119,6 @@ void chakra_name_finder(int chakra_no)
 
 void display_result(int lucky_choice)
 {
-    char result[400];
     char file_path_details[200];
     int temp;
     sprintf(file_path_details, "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\future_teller\\results\\%s.txt", chakra_name);
@@ -173,7 +175,7 @@ void check_user(char *user_name, int question_choice)
     if (check != 0)
     {
         red('f');
-        printf("\nHello Mr. %s, you have asked the same question again which is not application. You can ask one question only once. So, Don't ask the same questiona again.\n", user_name);
+        printf("\nHello Mr. %s, you have asked the same question again which is not applicable. You can ask one question only once. So, Don't ask the same questiona again.\n", user_name);
         exit(-1);
     }
     fclose(ptr);
@@ -204,5 +206,17 @@ void terms_and_conditions()
         exit(0);
     }
 accepted:
+    fclose(ptr);
+}
+
+void save_result(char *name, int choice)
+{
+    FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\future_teller\\user_result.txt", "a");
+    if (ptr == NULL)
+    {
+        perror("\nUnable to access database");
+        exit(EXIT_FAILURE);
+    }
+    fprintf(ptr, "%s\t%d\t%s\n", name, choice, result);
     fclose(ptr);
 }
