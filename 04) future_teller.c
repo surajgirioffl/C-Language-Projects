@@ -25,6 +25,9 @@ int main()
     char name[30];
     int question_choice;
     int lucky_choice;
+    int restart = 1;
+    char choice_for_restart;
+
     red('f');
     printf("=======WELCOME TO FUTURE TELLER (भविष्यवक्ता)========\n");
     reset();
@@ -33,31 +36,41 @@ int main()
     gets(name);
     reset();
 
-    magenta('f');
-    puts("Please Select your question from following: (कृपया निम्नलिखित में से अपने प्रश्न का चयन करें:)");
-    questions_list(); //function to print all questions list
-    printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
-    scanf("%d", &question_choice);
-    fflush(stdin);
-    reset();
+    while (1) //for repeating the program till user need
+    {
+        printf("\n===== %s Times=%d =====\n\n", name, restart);
+        magenta('f');
+        puts("\nPlease Select your question from following: (कृपया निम्नलिखित में से अपने प्रश्न का चयन करें:)");
+        questions_list(); //function to print all questions list
+        printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
+        scanf("%d", &question_choice);
+        fflush(stdin);
+        reset();
 
-    FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\future_teller\\user_record.txt", "r");
-    if (ptr != NULL && strcmp(name, "suraj") != 0 && strcmp(name, "suraj kumar giri") != 0 && strcmp(name, "suraj giri") != 0)
-        check_user(name, question_choice);
-    save_user(name, question_choice);
+        FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\future_teller\\user_record.txt", "r");
+        if (ptr != NULL && strcmp(name, "suraj") != 0 && strcmp(name, "suraj kumar giri") != 0 && strcmp(name, "suraj giri") != 0)
+            check_user(name, question_choice);
+        save_user(name, question_choice);
 
-    puts("\nPlease select any one number from following peacefully after remembering GOD: (कृपया प्रभु का स्मरण करके शांतिपूर्वक निम्नलिखित में से किसी एक नंबर का चयन करें:)");
-    Beep(1000, 2000);   //Beep(frequnecy, time_in_millisecond);     //for playing a beep sound
-    selection_matrix(); //function to print tisha yantra
-    printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
-    scanf("%d", &lucky_choice);
-    fflush(stdin);
+        puts("\nPlease select any one number from following peacefully after remembering GOD: (कृपया प्रभु का स्मरण करके शांतिपूर्वक निम्नलिखित में से किसी एक नंबर का चयन करें:)");
+        Beep(1000, 2000);   //Beep(frequnecy, time_in_millisecond);     //for playing a beep sound
+        selection_matrix(); //function to print tisha yantra
+        printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
+        scanf("%d", &lucky_choice);
+        fflush(stdin);
 
-    int chakra_no = calculation_part(question_choice, lucky_choice);
-    chakra_name_finder(chakra_no);
+        int chakra_no = calculation_part(question_choice, lucky_choice);
+        chakra_name_finder(chakra_no);
 
-    display_result(lucky_choice);
-    save_result(name, question_choice);
+        display_result(lucky_choice);
+        save_result(name, question_choice);
+
+        printf("\nFor exit press \"#\" otherwise press any key continue:\n");
+        scanf("%c", &choice_for_restart);
+        fflush(stdin);
+        if (choice_for_restart == '#')
+            break;
+    }
     return 0;
 }
 
