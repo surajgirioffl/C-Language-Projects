@@ -38,7 +38,6 @@ int main()
 
     while (1) //for repeating the program till user need
     {
-        printf("\n===== %s Times=%d =====\n\n", name, restart);
         magenta('f');
         puts("\nPlease Select your question from following: (कृपया निम्नलिखित में से अपने प्रश्न का चयन करें:)");
         questions_list(); //function to print all questions list
@@ -58,6 +57,12 @@ int main()
         printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
         scanf("%d", &lucky_choice);
         fflush(stdin);
+        if (lucky_choice < 1 || lucky_choice > 15)
+        {
+            red('f');
+            puts("\nWrong Choice! Selected. So, you are rejected\n");
+            exit(EXIT_FAILURE);
+        }
 
         int chakra_no = calculation_part(question_choice, lucky_choice);
         chakra_name_finder(chakra_no);
@@ -65,11 +70,17 @@ int main()
         display_result(lucky_choice);
         save_result(name, question_choice);
 
+        red('f');
+        printf("\n=====Currently Mr. %s used this program %d times=====\n", name, restart);
+
+        cyan('f');
         printf("\nFor exit press \"#\" otherwise press any key continue:\n");
+
         scanf("%c", &choice_for_restart);
         fflush(stdin);
         if (choice_for_restart == '#')
             break;
+        restart++;
     }
     return 0;
 }
