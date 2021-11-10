@@ -4,7 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <conio.h>
-#include "/storage/emulated/0/All C Programs/1) Cxxdroid Application/Header Files/color.h"
+#include "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\Header Files\\color.h"
 
 void remove_space(char string[]); //remove_space from begining of string (remove space from 0th position of array)
 void upper_case(char string[]);
@@ -15,7 +15,7 @@ void add_word_in_dictionary(); //to add word in Dictionary by super user
 
 void enter_password(); //used in case of super user
 int check_password();  //return 1 for correct and 0 for wrong
-char password[30];	 //used in case of super user
+char password[30];	   //used in case of super user
 void save_super_user_name(char name[]);
 int check_word(char eng_word_user[]);		 //to check word written available in database or not. return 0 if word not found and return 1 if word found
 void save_word(char word[], char meaning[]); //to save words written by super user.
@@ -25,7 +25,7 @@ int check_in_superuser_database(char word[]);
 //{
 char eng_word_file[100];			 //from FILE
 char hindi_word[500];				 //from FILE
-unsigned long required_word_number;  //from FILE
+unsigned long required_word_number;	 //from FILE
 unsigned long word_number_for_check; //from file to check the correct word
 //}
 
@@ -52,7 +52,7 @@ int main()
 
 		if (count == 0) //count=0; means word not found in main database
 		{
-			//count==0 it means word not found in Dictionary original data base. so, now we check word in super usder data
+			//count==0 it means word not found in Dictionary original data base. so, now we check word in super user data
 			int check = check_in_superuser_database(eng_word_user);
 			if (check == 0)
 			{
@@ -64,11 +64,13 @@ int main()
 
 				goto again; //to restart the program
 			}
+			else
+				found_words_history(eng_word_user); //to save this searched word in history to access later
 		}
 
 		else if (required_word_number < 91922)
 		{
-			ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/hindi_word_1.csv", "r");
+			ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\hindi_word_1.csv", "r");
 			if (ptr == NULL)
 			{
 				perror("Database is not reachable right now. Error code 102");
@@ -89,7 +91,7 @@ int main()
 
 		else if (required_word_number < 183119)
 		{
-			ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/hindi_word_2.csv", "r");
+			ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\hindi_word_2.csv", "r");
 			if (ptr == NULL)
 			{
 				red('f');
@@ -157,7 +159,7 @@ void remove_space(char string[])
 void found_words_history(char string[])
 {
 	FILE *ptr;
-	ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/found_words_history", "r+");
+	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\found_words_history", "r+");
 	if (ptr == NULL)
 		perror("Unable to access database to save history. Error Code 156\n");
 	int n = 0; //to get word number to save new word in history with proper indexing
@@ -174,7 +176,7 @@ void found_words_history(char string[])
 void notfound_words_history(char string[])
 {
 	FILE *ptr;
-	ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/notfound_words_history", "r+");
+	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\notfound_words_history", "r+");
 	if (ptr == NULL)
 		perror("Unable to access database to save history. Error Code 123\n");
 	int n = 0; //to get word number to save new word in history with proper indexing
@@ -200,7 +202,7 @@ void display_history()
 	switch (choice)
 	{
 	case 1:
-		ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/found_words_history", "r");
+		ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\found_words_history", "r");
 		if (ptr == NULL)
 			perror("Sorry, Unable to access database now. Error code 111");
 		advcolor('f', 213);
@@ -213,7 +215,7 @@ void display_history()
 		break;
 
 	case 2:
-		ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/notfound_words_history", "r");
+		ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\notfound_words_history", "r");
 		if (ptr == NULL)
 			perror("Sorry, Unable to access database now. Error code 112");
 
@@ -310,7 +312,7 @@ void enter_password()
 
 int check_password() //return 1 for correct and 0 for wrong
 {
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/super user password list", "r");
+	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\super user password list", "r");
 	if (ptr == NULL)
 	{
 		perror("Unable to access database to check your password. Error Code 142");
@@ -341,7 +343,7 @@ int check_password() //return 1 for correct and 0 for wrong
 
 void save_super_user_name(char name[])
 {
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/super user name list", "a");
+	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\super user name list", "a");
 	fprintf(ptr, "%s	", name);
 	fprintf(ptr, "%s\n", password);
 	fclose(ptr);
@@ -350,7 +352,7 @@ void save_super_user_name(char name[])
 int check_word(char eng_word_user[])
 {
 	unsigned short count = 0;
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/english_word.csv", "r");
+	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\english_word.csv", "r");
 	if (ptr == NULL)
 	{
 		perror("Database is not reachable right now. Error code 101");
@@ -378,7 +380,7 @@ int check_word(char eng_word_user[])
 
 void save_word(char word[], char meaning[])
 {
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/words added by super user", "a");
+	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\words added by super user", "a");
 	if (ptr == NULL)
 	{
 		perror("Unable to access database now to save your word. Error Code 404");
@@ -393,7 +395,7 @@ void save_word(char word[], char meaning[])
 int check_in_superuser_database(char word[])
 {
 	int check = 0;
-	FILE *ptr = fopen("/storage/emulated/0/All C Programs/1) Cxxdroid Application/File IO in C/Dictionary/words added by super user", "r");
+	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\words added by super user", "r");
 	if (ptr == NULL)
 	{
 		perror("\033[1;31mDatabase is not reachable right now. Error code 103");
