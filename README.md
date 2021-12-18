@@ -2,4 +2,4 @@ Project Based on C Programming Language. I have used File I/O, so all databases 
 
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=surajgirioffl)](https://github.com/anuraghazra/github-readme-stats)
 
-  [![HitCount](http://hits.dwyl.com/surajgirioffl/C-Language-Projects.svg?style=flat-square)](http://hits.dwyl.com/surajgirioffl/C-Language-Projects)
+[![HitCount](http://hits.dwyl.com/surajgirioffl/C-Language-Projects.svg?style=flat-square)](http://hits.dwyl.com/surajgirioffl/C-Language-Projects)
