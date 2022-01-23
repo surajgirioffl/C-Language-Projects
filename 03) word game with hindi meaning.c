@@ -1,24 +1,24 @@
 //{
 #define MAX_ERRORS 5
-//means maximum 5 errors are allowed to user
+// means maximum 5 errors are allowed to user
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\Header Files\\color.h"
+#include "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\Repositories\\C Language Special\\C_Language_Projects\\Header Files Used In this Repository\\color.h"
 
-//Global variables
+// Global variables
 int score;
-int count_in_file; //for availability of word in file.
+int count_in_file; // for availability of word in file.
 char user_word[100];
 char user_name[50];
 char computer_word[100];
-int count_in_temp;					//for availability of word in temporary file that contains previous words of one game.
-int wrong;							//for counting wrong word on the basis of any condition
-int no_of_correct_entry = 0;		//for count no. of correct words entered by user
-unsigned long required_word_number; //for store word number given by computer from Dictionary to find its hindi_meaning
+int count_in_temp;					// for availability of word in temporary file that contains previous words of one game.
+int wrong;							// for counting wrong word on the basis of any condition
+int no_of_correct_entry = 0;		// for count no. of correct words entered by user
+unsigned long required_word_number; // for store word number given by computer from Dictionary to find its hindi_meaning
 
-//functions
+// functions
 char *computer_turn(char ch);
 int search_from_temp_data(char string[]);
 void temp_user_computer_word();
@@ -40,7 +40,7 @@ void show_temp_word_history();
 //========Starting of main()==========
 int main()
 {
-	//assigning 0 to all counting Global variables so, in case restart of game takes place all data will reset to zero
+	// assigning 0 to all counting Global variables so, in case restart of game takes place all data will reset to zero
 	wrong = 0;
 	count_in_temp = 0;
 	count_in_file = 0;
@@ -55,7 +55,7 @@ int main()
 	fflush(stdin);
 	if (read_condition == 1)
 	{
-		game_conditions(); //functions to read_condition
+		game_conditions(); // functions to read_condition
 
 		yellow('f');
 		puts("\nWow, You have read the condition. Your target must be to achieve gold medal\n");
@@ -68,21 +68,21 @@ int main()
 	scanf("%d", &want_hindi_meaning);
 	fflush(stdin);
 
-	//removing file if exist in one condition abnormal termination else it will auto remove in last becuase it's last line of code in main()'
+	// removing file if exist in one condition abnormal termination else it will auto remove in last becuase it's last line of code in main()'
 	remove("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\temp_user_computer_word");
 
 	system("cls");
 	puts("Please write your name:");
 	gets(user_name);
 	system("cls");
-	uppercase(user_name); //convert user_name to uppercase
+	uppercase(user_name); // convert user_name to uppercase
 
 	int check1 = 0;
 	int check2 = 0;
-	int check3 = 1;					  //word for first time only.
-	no_of_correct_entry = 0;		  //for count no. of correct words entered by user
-	int no_of_word_enter_by_user = 1; //including wrong
-	//game started
+	int check3 = 1;					  // word for first time only.
+	no_of_correct_entry = 0;		  // for count no. of correct words entered by user
+	int no_of_word_enter_by_user = 1; // including wrong
+	// game started
 	while (1)
 	{
 		while (1)
@@ -103,29 +103,29 @@ int main()
 		if (no_of_correct_entry != 0)
 		{
 			check2 = search_from_temp_data(user_word);
-			check3 = check_user_word(); //user word is global so function will auto take
+			check3 = check_user_word(); // user word is global so function will auto take
 		}
 
-		permanent_user_data(); //function calling to save current right/wrong word of user permanently in database
+		permanent_user_data(); // function calling to save current right/wrong word of user permanently in database
 
 		if (check1 != 0 && check2 == 0 && check3 != 0)
 		{
 			/*printf("I am inside if.");
 		  printf("%d is the no.",no_of_correct_entry);*/
-			//temp_user_computer_word(user_word); //to save current user word
+			// temp_user_computer_word(user_word); //to save current user word
 			score += 2;
 
-			//now it's computer turn
+			// now it's computer turn
 			char ch = user_word[strlen(user_word) - 1];
 			yellow('f');
 			printf("\n==>> %s\n", computer_turn(ch));
 			reset();
 			if (want_hindi_meaning == 1)
-				hindi_meaning(); //function calling for hindi meaning
+				hindi_meaning(); // function calling for hindi meaning
 
-			temp_user_computer_word(); //to save current computer_word and user_word
+			temp_user_computer_word(); // to save current computer_word and user_word
 
-			permanent_computer_data(); //function calling to save current word of computer permanently in database
+			permanent_computer_data(); // function calling to save current word of computer permanently in database
 
 			no_of_correct_entry++;
 		}
@@ -133,7 +133,7 @@ int main()
 		else
 		{
 			red('f');
-			if (check1 == 0) //word not found in Dictionary
+			if (check1 == 0) // word not found in Dictionary
 				printf("wrong word \" %s \" entered. Not found in dictionary\n", user_word);
 			if (check2 != 0)
 				printf("previos written word \" %s \" entered\n", user_word);
@@ -141,7 +141,7 @@ int main()
 				printf("First character of your word \" %s \" is not match with last character of computer word\n", user_word);
 
 			wrong++;
-			score = score - 2; //2 point will deducted if wrong word
+			score = score - 2; // 2 point will deducted if wrong word
 
 			if (wrong == MAX_ERRORS + 1)
 				break;
@@ -152,7 +152,7 @@ int main()
 				printf("\nYou have made %d mistakes. And you can make only %d more mistake/mistakes.\n", wrong, MAX_ERRORS - wrong);
 			reset();
 		}
-	} //end of while. so end of game
+	} // end of while. so end of game
 
 	cyan('f');
 	printf("\n\n||||||||||====SCORE CARD OF Mr. %s====||||||||||\n", user_name);
@@ -160,17 +160,17 @@ int main()
 	white('f');
 	printf("You have scored %d points.\n", score);
 	reset();
-	score_saver(); //to save the score of user in database
-	leaderboard(); //to show leaderboard and position of user in leaderboard along with prizes
+	score_saver(); // to save the score of user in database
+	leaderboard(); // to show leaderboard and position of user in leaderboard along with prizes
 
 	remove("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\temp_user_computer_word");
 	return 0;
-} //end of main()
+} // end of main()
 
-void score_saver() //a+ is well working
+void score_saver() // a+ is well working
 {
 	FILE *ptr;
-	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\result.txt", "a"); //to create file first time (work if file not exist. if we use another mode then there is lots of issues)
+	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\result.txt", "a"); // to create file first time (work if file not exist. if we use another mode then there is lots of issues)
 	fclose(ptr);
 
 	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\result.txt", "r+");
@@ -182,12 +182,12 @@ void score_saver() //a+ is well working
 	int index = 0;
 	int score_from_file;
 	char name_from_file[50];
-	//file contains index then score then name
+	// file contains index then score then name
 
-	while (feof(ptr) == 0) //reading
+	while (feof(ptr) == 0) // reading
 	{
 		fscanf(ptr, "%d\t%d", &index, &score_from_file);
-		fgetc(ptr); //for taking tab whitespace
+		fgetc(ptr); // for taking tab whitespace
 		fgets(name_from_file, 50, ptr);
 	}
 
@@ -203,16 +203,16 @@ char *computer_turn(char ch)
 		perror("Database is not reachable right now. Error code 111");
 		exit(-1);
 	}
-	//displacing pointer to particular postion for fast access
-	//long displacement = displacement_for_ptr(ch);
-	//fseek(ptr, displacement, SEEK_SET);
+	// displacing pointer to particular postion for fast access
+	// long displacement = displacement_for_ptr(ch);
+	// fseek(ptr, displacement, SEEK_SET);
 
 	int check1;
 	int check2 = 0;
 	while (feof(ptr) == 0)
 	{
 		fscanf(ptr, "%lu", &required_word_number);
-		//fflush(ptr);
+		// fflush(ptr);
 		fgetc(ptr);
 		fgets(computer_word, 100, ptr);
 
@@ -229,7 +229,7 @@ char *computer_turn(char ch)
 					return computer_word;
 			}
 		}
-	} //end of while
+	} // end of while
 	fclose(ptr);
 }
 
@@ -283,7 +283,7 @@ void permanent_computer_data()
 		exit(EXIT_FAILURE);
 	}
 
-	static int index1; //for no. of word counter
+	static int index1; // for no. of word counter
 	static int count_call_in_computer;
 	if (count_call_in_computer == 0)
 		fprintf(ptr, "\n\nDatabase For Mr. %s\n", user_name);
@@ -314,7 +314,7 @@ void permanent_user_data()
 		exit(EXIT_FAILURE);
 	}
 
-	static int index; //for no. of word counter
+	static int index; // for no. of word counter
 	static int count_call_in_user;
 	if (count_call_in_user == 0)
 		fprintf(ptr, "\n\nDatabase of Mr. %s\n", user_name);
@@ -351,7 +351,7 @@ int search_from_dictionary(char string[])
 	while (feof(ptr) == 0)
 	{
 		fscanf(ptr, "%lu", &word_number);
-		//fflush(ptr);
+		// fflush(ptr);
 		getc(ptr);
 		fgets(word_from_file, 100, ptr);
 
@@ -376,7 +376,7 @@ void uppercase(char string[])
 int unwated_char_founder(char string[])
 {
 	int count = 0;
-	//int length= strlen(string);
+	// int length= strlen(string);
 	for (int i = 0; string[i] != '\0'; i++)
 	{
 		if (string[i] == '.' || string[i] == '/' || string[i] == ' ' || string[i] == '-' || strlen(string) == 1 || strlen(string) == 2 || string[i] == 39 || string[i] == 38 || string[i] == '!')
@@ -408,17 +408,17 @@ long displacement_for_ptr(char ch)
 	else if (ch == 'J')
 		return 1414491;
 	else if (ch == 'K')
-		return 1414491; //it's not available in database. passing previous value
+		return 1414491; // it's not available in database. passing previous value
 	else if (ch == 'L')
 		return 1463404;
 	else if (ch == 'M')
 		return 1563384;
 	else if (ch == 'N')
-		return 1563384; //it's not available in database. passing previous value
+		return 1563384; // it's not available in database. passing previous value
 	else if (ch == 'O')
 		return 1776138;
 	else if (ch == 'P')
-		return 1776138; //it's not available in database. passing previous value
+		return 1776138; // it's not available in database. passing previous value
 	else if (ch == 'Q')
 		return 2110975;
 	else if (ch == 'R')
@@ -430,7 +430,7 @@ long displacement_for_ptr(char ch)
 	else if (ch == 'U')
 		return 2934296;
 	else if (ch == 'V')
-		return 2934296; //it's not available in database. passing previous value
+		return 2934296; // it's not available in database. passing previous value
 	else if (ch == 'W')
 		return 3068026;
 	else if (ch == 'X')
@@ -485,14 +485,14 @@ void game_conditions()
 
 int check_user_word()
 {
-	//now checking that 1st char or user_word is same as last char of computer or not (started from 2nd iteration of while)
+	// now checking that 1st char or user_word is same as last char of computer or not (started from 2nd iteration of while)
 	int check = 0;
-	if (no_of_correct_entry != 0) //no_of_correct_entry=0 means no word given computer till now.
+	if (no_of_correct_entry != 0) // no_of_correct_entry=0 means no word given computer till now.
 	{
 		if (user_word[0] == computer_word[strlen(computer_word) - 1])
 			check++;
 	}
-	return check; //means check=0 means wrong word entered. check=1 means right word.
+	return check; // means check=0 means wrong word entered. check=1 means right word.
 }
 //}
 
@@ -519,7 +519,7 @@ void hindi_meaning()
 				break;
 		}
 		fclose(ptr);
-	} //else-if close
+	} // else-if close
 
 	else if (required_word_number < 183119)
 	{
@@ -540,11 +540,11 @@ void hindi_meaning()
 				break;
 		}
 		fclose(ptr);
-	} //2nd else-if close
+	} // 2nd else-if close
 
-	//printing of Meaning part
+	// printing of Meaning part
 	printf("\"Hindi Meaning\", [Antonym and more info], \"Sentence\" related to the word \033[1;33m\"%s\"\033[0m are following:\f", computer_word);
-	//advcolor('f',53);
+	// advcolor('f',53);
 	white('f');
 	printf("\n%s\n", hindi_word);
 	reset();
@@ -553,7 +553,7 @@ void hindi_meaning()
 
 void leaderboard()
 {
-	//first we need to arrange the result data of users in Database in a proper order
+	// first we need to arrange the result data of users in Database in a proper order
 	arrange_result_database();
 
 	int index;
@@ -561,7 +561,7 @@ void leaderboard()
 	char name_from_file[50];
 	int user_rank;
 
-	//file contains index then score then name in a ordered way
+	// file contains index then score then name in a ordered way
 	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\ordered_leaderboard.txt", "r");
 	if (ptr == NULL)
 	{
@@ -572,7 +572,7 @@ void leaderboard()
 	while (feof(ptr) == 0)
 	{
 		fscanf(ptr, "%d\t%d", &index, &score_from_file);
-		fgetc(ptr); //for taking tab whitespace
+		fgetc(ptr); // for taking tab whitespace
 		fgets(name_from_file, 50, ptr);
 
 		name_from_file[strlen(name_from_file) - 1] = 0;
@@ -637,20 +637,20 @@ void arrange_result_database()
 	int index;
 	int score_from_file;
 	char name_from_file[50];
-	//file contains index then score then name
+	// file contains index then score then name
 
-	while (feof(ptr) == 0) //reading for getting index
+	while (feof(ptr) == 0) // reading for getting index
 	{
 		fscanf(ptr, "%d\t%d", &index, &score_from_file);
-		fgetc(ptr); //for taking tab whitespace
+		fgetc(ptr); // for taking tab whitespace
 		fgets(name_from_file, 50, ptr);
 	}
 
 	int max_index = index;
-	int *p; //for score_from_file
+	int *p; // for score_from_file
 	p = (int *)malloc(max_index * sizeof(int));
 
-	char(*p2)[30]; //for name_from_file
+	char(*p2)[30]; // for name_from_file
 	p2 = (char(*)[30])malloc(max_index * 30 * sizeof(char));
 
 	if (p == NULL || p2 == NULL)
@@ -658,11 +658,11 @@ void arrange_result_database()
 	int *save_address = p;
 
 	int i = 0;
-	rewind(ptr); //to point the pointer to beginning of the file
+	rewind(ptr); // to point the pointer to beginning of the file
 	while (feof(ptr) == 0)
 	{
 		fscanf(ptr, "%d\t%d", &index, &score_from_file);
-		fgetc(ptr); //for taking tab whitespace
+		fgetc(ptr); // for taking tab whitespace
 		fgets(name_from_file, 50, ptr);
 		*p = score_from_file;
 		p++;
@@ -673,9 +673,9 @@ void arrange_result_database()
 
 	int temp;
 	p = save_address;
-	char save_user_name[30]; //to save user name in changing of data
+	char save_user_name[30]; // to save user name in changing of data
 
-	//bubble shot algorithm for descending order
+	// bubble shot algorithm for descending order
 	for (i = 0; i < max_index; i++)
 	{
 		for (int j = i + 1; j < max_index; j++)
@@ -693,7 +693,7 @@ void arrange_result_database()
 		}
 	}
 
-	//now making new file to print the order data
+	// now making new file to print the order data
 	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\ordered_leaderboard.txt", "w");
 
 	for (int i = 0; i < max_index; i++)
@@ -706,8 +706,8 @@ void arrange_result_database()
 
 void show_temp_word_history()
 {
-	advcolor('b', 169); //for white background color
-	advcolor('f', 232); //for black foreground color
+	advcolor('b', 169); // for white background color
+	advcolor('f', 232); // for black foreground color
 	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\temp_user_computer_word", "r");
 	if (ptr == NULL)
 		puts("sorry. No history available till now.");

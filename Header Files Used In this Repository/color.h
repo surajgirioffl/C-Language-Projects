@@ -1,31 +1,13 @@
 /* SIMPLE COLOR 3 bit*/
 #include <stdio.h>
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void black(char ch); // ch for f/F or b/B
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void red(char ch);
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void green(char ch);
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void yellow(char ch);
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void blue(char ch);
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void magenta(char ch);
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void cyan(char ch);
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void white(char ch);
-/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
-if user give wrong argument then foreground will work*/
 void random_color();
 void advcolor(char ch, int n);
 
@@ -33,6 +15,8 @@ void underline();
 void reset(); // to reset all text colors and back to normal
 
 // Definition part
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void black(char ch)
 {
   if (ch == 'b' || ch == 'B')
@@ -40,7 +24,8 @@ void black(char ch)
   else
     printf("\033[1;30m");
 }
-
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void red(char ch)
 {
   if (ch == 'b' || ch == 'B')
@@ -49,6 +34,8 @@ void red(char ch)
     printf("\033[1;31m");
 }
 
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void green(char ch)
 {
   if (ch == 'b' || ch == 'B')
@@ -57,6 +44,8 @@ void green(char ch)
     printf("\033[1;32m");
 }
 
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void yellow(char ch)
 {
   if (ch == 'b' || ch == 'B')
@@ -65,6 +54,8 @@ void yellow(char ch)
     printf("\033[1;33m");
 }
 
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void blue(char ch)
 {
   if (ch == 'b' || ch == 'B')
@@ -73,6 +64,8 @@ void blue(char ch)
     printf("\033[1;34m");
 }
 
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void magenta(char ch)
 {
   if (ch == 'b' || ch == 'B')
@@ -81,6 +74,8 @@ void magenta(char ch)
     printf("\033[1;35m");
 }
 
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void cyan(char ch)
 {
   if (ch == 'b' || ch == 'B')
@@ -89,6 +84,8 @@ void cyan(char ch)
     printf("\033[1;36m");
 }
 
+/* argument ~ 'f' or 'F' for foreground and 'b' or 'B' for background
+if user give wrong argument then foreground will work*/
 void white(char ch)
 {
   if (ch == 'b' || ch == 'B')
