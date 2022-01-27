@@ -6,37 +6,37 @@
 #include <conio.h>
 #include "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\Header Files\\color.h"
 
-void remove_space(char string[]); //remove_space from begining of string (remove space from 0th position of array)
+void remove_space(char string[]); // remove_space from begining of string (remove space from 0th position of array)
 void upper_case(char string[]);
 void found_words_history(char string[]);
 void notfound_words_history(char string[]);
 void display_history();
-void add_word_in_dictionary(); //to add word in Dictionary by super user
+void add_word_in_dictionary(); // to add word in Dictionary by super user
 
-void enter_password(); //used in case of super user
-int check_password();  //return 1 for correct and 0 for wrong
-char password[30];	   //used in case of super user
+void enter_password(); // used in case of super user
+int check_password();  // return 1 for correct and 0 for wrong
+char password[30];	   // used in case of super user
 void save_super_user_name(char name[]);
-int check_word(char eng_word_user[]);		 //to check word written available in database or not. return 0 if word not found and return 1 if word found
-void save_word(char word[], char meaning[]); //to save words written by super user.
+int check_word(char eng_word_user[]);		 // to check word written available in database or not. return 0 if word not found and return 1 if word found
+void save_word(char word[], char meaning[]); // to save words written by super user.
 int check_in_superuser_database(char word[]);
 //}
 
 //{
-char eng_word_file[100];			 //from FILE
-char hindi_word[500];				 //from FILE
-unsigned long required_word_number;	 //from FILE
-unsigned long word_number_for_check; //from file to check the correct word
+char eng_word_file[100];			 // from FILE
+char hindi_word[500];				 // from FILE
+unsigned long required_word_number;	 // from FILE
+unsigned long word_number_for_check; // from file to check the correct word
 //}
 
 int main()
 {
 	printf("Hii Dear\U0001F64b\U0001F44b WELCOME TO   \033[1;31m \"ENG-HINDI DICTIONARY \U000000A9\"\033[0m Dev:- Suraj Kumar Giri\n");
 	system("pause");
-	char eng_word_user[100];  //from user
-	unsigned short count = 0; //to chech availability of a word
+	char eng_word_user[100];  // from user
+	unsigned short count = 0; // to chech availability of a word
 	FILE *ptr;
-	char again; //to repeat the whole program again
+	char again; // to repeat the whole program again
 
 	do
 	{
@@ -46,13 +46,13 @@ int main()
 		gets(eng_word_user);
 		reset();
 
-		upper_case(eng_word_user); //to convert into uppercase
+		upper_case(eng_word_user); // to convert into uppercase
 
-		count = check_word(eng_word_user); //to check availability of word in original database
+		count = check_word(eng_word_user); // to check availability of word in original database
 
-		if (count == 0) //count=0; means word not found in main database
+		if (count == 0) // count=0; means word not found in main database
 		{
-			//count==0 it means word not found in Dictionary original data base. so, now we check word in super user data
+			// count==0 it means word not found in Dictionary original data base. so, now we check word in super user data
 			int check = check_in_superuser_database(eng_word_user);
 			if (check == 0)
 			{
@@ -60,12 +60,12 @@ int main()
 				printf("Sorry, No such word \"%s\" found in database", eng_word_user);
 				reset();
 
-				notfound_words_history(eng_word_user); //to save this searched word in history to access later
+				notfound_words_history(eng_word_user); // to save this searched word in history to access later
 
-				goto again; //to restart the program
+				goto again; // to restart the program
 			}
 			else
-				found_words_history(eng_word_user); //to save this searched word in history to access later
+				found_words_history(eng_word_user); // to save this searched word in history to access later
 		}
 
 		else if (required_word_number < 91922)
@@ -77,7 +77,7 @@ int main()
 				exit(-1);
 			}
 
-			found_words_history(eng_word_user); //to save this searched word in history to access later
+			found_words_history(eng_word_user); // to save this searched word in history to access later
 
 			while (feof(ptr) == 0)
 			{
@@ -87,7 +87,7 @@ int main()
 					break;
 			}
 			fclose(ptr);
-		} //else-if close
+		} // else-if close
 
 		else if (required_word_number < 183119)
 		{
@@ -100,7 +100,7 @@ int main()
 				exit(-1);
 			}
 
-			found_words_history(eng_word_user); //to save found words in history to access it later
+			found_words_history(eng_word_user); // to save found words in history to access it later
 
 			while (feof(ptr) == 0)
 			{
@@ -110,21 +110,22 @@ int main()
 					break;
 			}
 			fclose(ptr);
-		} //2nd else-if close
+		} // 2nd else-if close
 
-		//printing of Meaning part
+		// printing of Meaning part
 		printf("\n\"Hindi Meaning\", [Antonym and more info], \"Sentence\" related to the word \"%s\" are following:\f", eng_word_user);
 		magenta('h');
 		printf("\n%-100s\n", hindi_word);
 		reset();
 
-		//last part for each iteration
+		// last part for each iteration
 	again:
 		yellow('f');
 		puts("\n\n==>> Press \'any key\' except below mentioned for search new word again.");
 		puts("==>> Press \'f\' to display searched words history.");
 		puts("==>> Press \'a\' Super User Section (Add Words to dictionary)");
-		puts("==>> Press 1 for Exit.");
+		puts("==>> Press # for Exit.");
+		printf("$ ");
 		scanf("%c", &again);
 		fflush(stdin);
 		reset();
@@ -132,7 +133,7 @@ int main()
 			display_history();
 		else if (again == 'a')
 			add_word_in_dictionary();
-	} while (again != '1');
+	} while (again != '#');
 
 	advcolor('f', 206);
 	printf("\033[1;4m");
@@ -141,9 +142,9 @@ int main()
 	printf("\nDeveloped by Mr. Suraj Kumar Giri\nSee you soon. Bye Bye...");
 	reset();
 	return 0;
-} //end of main()
+} // end of main()
 
-//other functions
+// other functions
 void upper_case(char string[])
 {
 	for (int i = 0; string[i] != '\0'; i++)
@@ -162,12 +163,12 @@ void found_words_history(char string[])
 	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\found_words_history", "r+");
 	if (ptr == NULL)
 		perror("Unable to access database to save history. Error Code 156\n");
-	int n = 0; //to get word number to save new word in history with proper indexing
+	int n = 0; // to get word number to save new word in history with proper indexing
 	char text[100];
 	while (feof(ptr) == 0)
 	{
 		fscanf(ptr, "%d", &n);
-		fgets(text, 100, ptr); //it auto make pointer to new line
+		fgets(text, 100, ptr); // it auto make pointer to new line
 	}
 	fprintf(ptr, "%d %s\n", ++n, string);
 	fclose(ptr);
@@ -179,12 +180,12 @@ void notfound_words_history(char string[])
 	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\notfound_words_history", "r+");
 	if (ptr == NULL)
 		perror("Unable to access database to save history. Error Code 123\n");
-	int n = 0; //to get word number to save new word in history with proper indexing
+	int n = 0; // to get word number to save new word in history with proper indexing
 	char text[100];
 	while (feof(ptr) == 0)
 	{
 		fscanf(ptr, "%d", &n);
-		fgets(text, 100, ptr); //it auto make pointer to new line
+		fgets(text, 100, ptr); // it auto make pointer to new line
 	}
 	fprintf(ptr, "%d %s\n", ++n, string);
 	fclose(ptr);
@@ -247,8 +248,8 @@ void add_word_in_dictionary()
 	char name[30];
 	puts("write your name please:");
 	gets(name);
-	enter_password();			  //for enter the password from console
-	int check = check_password(); //it return 0 for correct pass word and 1 for wrong password
+	enter_password();			  // for enter the password from console
+	int check = check_password(); // it return 0 for correct pass word and 1 for wrong password
 	if (check == 0)
 	{
 		red('f');
@@ -257,19 +258,19 @@ void add_word_in_dictionary()
 	}
 	else
 	{
-		save_super_user_name(name); //for save user name
+		save_super_user_name(name); // for save user name
 		printf("\nHii Mr. %s Welcome in Super User Attribute.", name);
-		//variable declaration
+		// variable declaration
 		char word[40];
 		char meaning[100];
 		puts("Please write the word that you want to add in Dictionary:");
 		gets(word);
 
-		upper_case(word);							   //for convert in uppercase
-		int save = check_word(word);				   //return 1 if word found and 0 if word not found (for main dictionary database)
-		int save2 = check_in_superuser_database(word); //return 1 if word found and 0 if word not found (from super User database)
-													   //1 meand word in available in respective data base. so we don't take such word as super user word.
-		if (save == 1 || save2 == 1)				   //word found in database
+		upper_case(word);							   // for convert in uppercase
+		int save = check_word(word);				   // return 1 if word found and 0 if word not found (for main dictionary database)
+		int save2 = check_in_superuser_database(word); // return 1 if word found and 0 if word not found (from super User database)
+													   // 1 meand word in available in respective data base. so we don't take such word as super user word.
+		if (save == 1 || save2 == 1)				   // word found in database
 		{
 			red('f');
 			printf("Sorry, \" %s \" is available in database. You can't add available words of database\n", word);
@@ -294,23 +295,21 @@ void add_word_in_dictionary()
 
 void enter_password()
 {
-	char temp = 0;
 	int i;
 
 	white('f');
 	puts("write access code provided by developer:");
-	for (i = 0; temp != '\n'; i++)
+	for (i = 0; i < 8; i++)
 	{
-		temp = getch();
+		password[i] = getch();
 		printf("*");
-		password[i] = temp;
 	}
-	password[i - 1] = '\0'; //because '\n' is added then condition fails. so I have to remove it.
+	password[i] = '\0'; // because '\n' is added then condition fails. so I have to remove it.
 
 	reset();
-} //done
+} // done
 
-int check_password() //return 1 for correct and 0 for wrong
+int check_password() // return 1 for correct and 0 for wrong
 {
 	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\Dictionary\\super user password list", "r");
 	if (ptr == NULL)
@@ -325,9 +324,9 @@ int check_password() //return 1 for correct and 0 for wrong
 	while (feof(ptr) == 0)
 	{
 		fscanf(ptr, "%s\n", password_from_file);
-		//printf("%s.  ", password_from_file);
+		// printf("%s.  ", password_from_file);
 		//	printf("  ₹%s", password);
-		//printf("\n@%s@ is password and @%s@ is the password from file\n",password,password_from_file);
+		// printf("\n@%s@ is password and @%s@ is the password from file\n",password,password_from_file);
 		if (strcmp(password_from_file, password) == 0)
 		{
 			count++;
@@ -336,9 +335,9 @@ int check_password() //return 1 for correct and 0 for wrong
 	}
 	fclose(ptr);
 	if (count == 0)
-		return 0; //password not found
+		return 0; // password not found
 	else
-		return 1; //password found
+		return 1; // password found
 }
 
 void save_super_user_name(char name[])
@@ -364,8 +363,8 @@ int check_word(char eng_word_user[])
 		fgets(eng_word_file, 100, ptr);
 
 		eng_word_file[strlen(eng_word_file) - 1] = 0;
-		//puts(eng_word_file);
-		remove_space(eng_word_file); //function calling
+		// puts(eng_word_file);
+		remove_space(eng_word_file); // function calling
 
 		if (strcmp(eng_word_file, eng_word_user) == 0)
 		{
@@ -391,7 +390,7 @@ void save_word(char word[], char meaning[])
 	fclose(ptr);
 }
 
-//checking word in superuser database
+// checking word in superuser database
 int check_in_superuser_database(char word[])
 {
 	int check = 0;
@@ -403,15 +402,15 @@ int check_in_superuser_database(char word[])
 		exit(-1);
 	}
 
-	//found_words_history(eng_word_user); //to save found words in history to access it later
+	// found_words_history(eng_word_user); //to save found words in history to access it later
 	char super_user_word[60];
 	while (feof(ptr) == 0)
 	{
 		fgets(super_user_word, 60, ptr);
 		fgets(hindi_word, 500, ptr);
 
-		super_user_word[strlen(super_user_word) - 1] = 0; //to remove auto new line added by fgets()
-		upper_case(super_user_word);					  //converting super user word from file into uppercase becase our user's word is already converted in to same'
+		super_user_word[strlen(super_user_word) - 1] = 0; // to remove auto new line added by fgets()
+		upper_case(super_user_word);					  // converting super user word from file into uppercase becase our user's word is already converted in to same'
 		if (strcmp(super_user_word, word) == 0)
 		{
 			check++;
@@ -421,7 +420,7 @@ int check_in_superuser_database(char word[])
 
 	fclose(ptr);
 	if (check == 0)
-		return 0; //for not found
+		return 0; // for not found
 	else
-		return 1; //for found
+		return 1; // for found
 }
