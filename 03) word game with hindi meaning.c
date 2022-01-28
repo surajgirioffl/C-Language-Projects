@@ -226,11 +226,13 @@ char *computer_turn(char ch)
 				if (no_of_correct_entry != 0)
 					check2 = search_from_temp_data(computer_word);
 				if (check2 == 0)
+				{
+					fclose(ptr);
 					return computer_word;
+				}
 			}
 		}
 	} // end of while
-	fclose(ptr);
 }
 
 int search_from_temp_data(char string[])
