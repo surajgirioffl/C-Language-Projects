@@ -608,7 +608,7 @@ void leaderboard()
 	gets(choice);
 
 	printf("\n");
-	if (strcmp(choice, "yes") == 0 || strcmp(choice, "Yes") == 0)
+	if (strcmp(choice, "yes") == 0 || strcmp(choice, "Yes") == 0 || choice[0] == 'y' || choice[0] == 'Y')
 	{
 		int c;
 		rewind(ptr);
