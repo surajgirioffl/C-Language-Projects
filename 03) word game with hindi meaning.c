@@ -35,6 +35,7 @@ void hindi_meaning();
 void leaderboard();
 void arrange_result_database();
 void show_temp_word_history();
+void save_current_date_time();
 
 //{
 //========Starting of main()==========
@@ -160,13 +161,15 @@ int main()
 	white('f');
 	printf("You have scored %d points.\n", score);
 	reset();
-	score_saver(); // to save the score of user in database
-	leaderboard(); // to show leaderboard and position of user in leaderboard along with prizes
+	score_saver();			  // to save the score of user in database
+	save_current_date_time(); // to save the date and time of user access
+	leaderboard();			  // to show leaderboard and position of user in leaderboard along with prizes
 
 	remove("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\temp_user_computer_word");
 	return 0;
 } // end of main()
 
+/*to save the score of user in database.*/
 void score_saver() // a+ is well working
 {
 	FILE *ptr;
@@ -608,6 +611,7 @@ void leaderboard()
 	gets(choice);
 
 	printf("\n");
+	/*modified from here on 30th Jan 2022, becaus date and time database created today and we have to print  them also along with leaderboard.*/
 	if (strcmp(choice, "yes") == 0 || strcmp(choice, "Yes") == 0 || choice[0] == 'y' || choice[0] == 'Y')
 	{
 		int c;
@@ -724,4 +728,92 @@ void show_temp_word_history()
 		puts("\n===End of history.===");
 	}
 	reset();
+}
+
+// start
+/*Take argument as character pointer(to store string) and store today's date in string format at the obtanined address 'date'*/
+void today_date(char *date)
+{
+	// date on cmd returns date and also ask for new date. e.g 'The current date is: 28-01-2022' and ask for new date in new line.
+	// so we use 'date /t' to get only the exact date without extra string
+	FILE *ptr = popen("date /t", "r");
+	if (ptr == NULL)
+		strcpy(date, "N/A");
+	else
+	{
+		int i = 0;
+		while (feof(ptr) == 0)
+		{
+			date[i] = fgetc(ptr);
+			i++;
+		}
+		// two newline characters returns after showing time in cmd. So, we have to remove both and add NULL
+		date[i - 2] = '\0'; // to add NULL at end of string for termination conditionk
+	}
+}
+// end
+
+// start
+/*Take argument as character pointer(to store string) and store current time in string format at the obtanined address 'time'*/
+void current_time(char *time)
+{
+	// time on cmd returns current time and also ask for new time. 'The current time is: 21:35:24.90' and ask for new time in new line
+	// so we use 'time  /t' to get only the exact time without extra string and in 12h format
+	FILE *ptr = popen("time /t", "r");
+	if (ptr == NULL)
+		strcpy(time, "N/A");
+	else
+	{
+		int i = 0;
+		while (feof(ptr) == 0)
+		{
+			time[i] = fgetc(ptr);
+			i++;
+		}
+		// two newline characters returns after showing time in cmd. So, we have to remove both and add NULL
+		time[i - 2] = '\0'; // to add NULL at end of string for termination condition}
+	}
+	// end
+}
+
+/*save date and time of current user in database*/
+void save_current_date_time()
+{
+	// for date
+	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\user_played_date.txt", "a+");
+	if (ptr == NULL)
+	{
+		printf("\nUnable to access database. Exit code 901.\n");
+		exit(EXIT_FAILURE);
+	}
+	char *current_date = (char *)malloc(30);
+	today_date(current_date);
+	int index = 0;
+	char data_from_file[50];
+
+	// to get last index
+	while (feof(ptr) == 0)
+	{
+		fscanf(ptr, "%d\t", &index);
+		fgets(data_from_file, 50, ptr); // it will auto add newline to data_from_file but we don't remove it becaue we are not going to print it now
+	}
+
+	fprintf(ptr, "%d\t%s\n", ++index, current_date);
+	free(current_date);
+	fclose(ptr);
+
+	// for time
+	/*opening in apend mode because last index is already available*/
+	freopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\user_played_time.txt", "a", ptr);
+	if (ptr == NULL)
+	{
+		printf("\nUnable to access database. Exit code 902.\n");
+		exit(EXIT_FAILURE);
+	}
+	char *present_time = (char *)malloc(30);
+	current_time(present_time);
+
+	fprintf(ptr, "%d\t%s\n", index, present_time);
+	free(current_date);
+	fclose(ptr);
 }
