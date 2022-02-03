@@ -1,3 +1,7 @@
+/*Last modified on 4th Feb 2022.
+ * In future add indexing of history.
+ * add timer for basic, medium, advanced and expert user.
+ */
 //{
 #define MAX_ERRORS 5
 // means maximum 5 errors are allowed to user
@@ -5,7 +9,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\Repositories\\C Language Special\\C_Language_Projects\\Header Files Used In this Repository\\color.h"
+#include "D:\C Language\All C Programs\1) Cxxdroid Application\Header Files\color.h"
 
 // Global variables
 int score;
@@ -17,6 +21,8 @@ int count_in_temp;					// for availability of word in temporary file that contai
 int wrong;							// for counting wrong word on the basis of any condition
 int no_of_correct_entry = 0;		// for count no. of correct words entered by user
 unsigned long required_word_number; // for store word number given by computer from Dictionary to find its hindi_meaning
+char current_date[30];				// stored globally to check while printing rank of user
+char present_time[30];				// stored globally to check while printing rank of user
 
 // functions
 char *computer_turn(char ch);
@@ -33,9 +39,12 @@ void score_saver();
 int check_user_word();
 void hindi_meaning();
 void leaderboard();
-void arrange_result_database();
+int arrange_result_database();
 void show_temp_word_history();
 void save_current_date_time();
+void today_date(char *date);
+void current_time(char *time);
+void commands();
 
 //{
 //========Starting of main()==========
@@ -49,8 +58,10 @@ int main()
 
 	int read_condition;
 	int want_hindi_meaning = 0;
-	printf("Hii Dear\U0001F64b\U0001F44b WELCOME TO   \033[1;31m \"SUPER WORD GAME \U000000A9\"\033[0m Dev:- Suraj Kumar Giri\n\n");
+	system("cls");
+	printf("Hii Dear\U0001F64b\U0001F44b WELCOME TO \033[1;31m\"SUPER WORD GAME \U000000A9\"\033[0m Dev:- Suraj Kumar Giri\n\n");
 	system("pause");
+	cyan('f');
 	puts("\npress 1 for see details and conditions of this game. OR Press any key to continue to game......");
 	scanf("%d", &read_condition);
 	fflush(stdin);
@@ -64,7 +75,8 @@ int main()
 		reset();
 	}
 
-	puts("Do you want to see hindi meaning of word given by computer in the game.");
+	green('f');
+	puts("Do you want to see 'hindi' meaning of word given by computer in the game.");
 	puts("press 1 for yes else press any key to continue:");
 	scanf("%d", &want_hindi_meaning);
 	fflush(stdin);
@@ -73,7 +85,10 @@ int main()
 	remove("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\temp_user_computer_word");
 
 	system("cls");
+	advcolor('f', 195);
 	puts("Please write your name:");
+	reset();
+	printf("$ ");
 	gets(user_name);
 	system("cls");
 	uppercase(user_name); // convert user_name to uppercase
@@ -83,19 +98,46 @@ int main()
 	int check3 = 1;					  // word for first time only.
 	no_of_correct_entry = 0;		  // for count no. of correct words entered by user
 	int no_of_word_enter_by_user = 1; // including wrong
+
 	// game started
-	while (1)
+	commands(); // to show the list of commands which can be used by user anytime in game
+
+	while (1) // game started
 	{
+		int terminate = 0; // increase if user wants to terminate the game immediately
 		while (1)
 		{
 			printf("\n\033[1;31m%02d.\033[0m It's\033[1;36m %s \033[0mTurn. So, Write your word:\n", no_of_word_enter_by_user, user_name);
+			printf("$ ");
 			magenta('f');
 			gets(user_word);
-			if (user_word[0] == '#')
-				show_temp_word_history();
-			else
+			if (user_word[0] == '\0')
+				continue;
+			else if (strcmp(user_word, "#clear") == 0)
+			{
+				system("cls");
+				continue;
+			}
+			else if (strcmp(user_word, "#exit") == 0)
+			{
+				terminate++;
 				break;
+			}
+			else if (strcmp(user_word, "#cmd") == 0)
+			{
+				commands();
+				continue;
+			}
+			else if (strcmp(user_word, "#") == 0)
+			{
+				show_temp_word_history();
+				continue;
+			}
+			break;
 		}
+		if (terminate == 1)
+			break;
+
 		no_of_word_enter_by_user++;
 		reset();
 		uppercase(user_word);
@@ -163,9 +205,11 @@ int main()
 	reset();
 	score_saver();			  // to save the score of user in database
 	save_current_date_time(); // to save the date and time of user access
-	leaderboard();			  // to show leaderboard and position of user in leaderboard along with prizes
+	/*leanderboard is not showing then it's sure that there is problem within function leaderboard() or any other function called from leaderboard() */
+	leaderboard(); // to show leaderboard and position of user in leaderboard along with prizes
 
 	remove("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\temp_user_computer_word");
+	printf("\n\033[1;32m******Main Exited successfuly******\033[0m\n");
 	return 0;
 } // end of main()
 
@@ -559,29 +603,46 @@ void hindi_meaning()
 void leaderboard()
 {
 	// first we need to arrange the result data of users in Database in a proper order
-	arrange_result_database();
+	int maxIndex = arrange_result_database();
+	/*maxIndex is returned because we have added some extra line in leaderboard. Actually, I have
+	 * added last update date and time in the arraged_leaderboard database. And if we read that
+	 * part then it creates problem in comparing etc in this function.
+	 * by this maxIndex we will read only till if maxIndex found
+	 */
 
 	int index;
 	int score_from_file;
-	char name_from_file[50];
+	char name_from_file[100];
+	char *date_from_file = (char *)calloc(50, sizeof(char));
+	char *time_from_file = (char *)calloc(50, sizeof(char));
 	int user_rank;
 
 	// file contains index then score then name in a ordered way
 	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\ordered_leaderboard.txt", "r");
-	if (ptr == NULL)
+	FILE *ptr2 = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\ordered_date_and_time.txt", "r");
+
+	if (ptr == NULL || ptr2 == NULL)
 	{
 		perror("unable to access leaderboard. exit code 108");
 		exit(EXIT_FAILURE);
 	}
 
-	while (feof(ptr) == 0)
+	// modified here because time and date is added in leaderboard
+	/*modification skipped because I have create seperate file for arranged date and time*/
+	// problem in reading multiple file at same time
+	while (feof(ptr) == 0 && index < maxIndex) // && feof(ptr2) == 0)
 	{
 		fscanf(ptr, "%d\t%d", &index, &score_from_file);
 		fgetc(ptr); // for taking tab whitespace
 		fgets(name_from_file, 50, ptr);
-
 		name_from_file[strlen(name_from_file) - 1] = 0;
-		if (score_from_file == score && strcmp(user_name, name_from_file) == 0)
+
+		fgets(date_from_file, 50, ptr2);
+		fgets(time_from_file, 50, ptr2);
+		fgetc(ptr2);									// to take extra newline
+		date_from_file[strlen(date_from_file) - 1] = 0; // 1 extra space available in date but extra space available at both places i.e in database as well as variable present in memory i.e current_date
+		time_from_file[strlen(time_from_file) - 1] = 0;
+		if (score_from_file == score && strcmp(user_name, name_from_file) == 0 && strcmp(present_time, time_from_file) == 0 && strcmp(current_date, date_from_file) == 0)
 			user_rank = index;
 	}
 
@@ -607,31 +668,66 @@ void leaderboard()
 
 	char choice[4];
 	printf("\nDo you want to see leaderboard chart. yes or no:\n");
+	printf("$ ");
 	fflush(stdin);
 	gets(choice);
 
 	printf("\n");
+	index = 0;
 	/*modified from here on 30th Jan 2022, becaus date and time database created today and we have to print  them also along with leaderboard.*/
 	if (strcmp(choice, "yes") == 0 || strcmp(choice, "Yes") == 0 || choice[0] == 'y' || choice[0] == 'Y')
 	{
 		int c;
 		rewind(ptr);
-		while (1)
+		rewind(ptr2);
+		// priting the header
+		printf("\033[4m\033[38;5;142mRank    \033[38;5;190mScore     \033[38;5;189mName                                          \033[38;5;152mDate           \033[38;5;14mTime\033[0m\n");
+
+		while (feof(ptr) == 0)
 		{
-			c = fgetc(ptr);
-			if (c == EOF)
+			// c = fgetc(ptr);
+			// if (c == EOF)
+			// 	break;
+			// printf("%c", c);
+			fscanf(ptr, "%d\t%d", &index, &score_from_file);
+			fgetc(ptr); // for taking tab whitespace
+			fgets(name_from_file, 50, ptr);
+			name_from_file[strlen(name_from_file) - 1] = 0;
+
+			fgets(date_from_file, 50, ptr2);
+			fgets(time_from_file, 50, ptr2);
+			fgetc(ptr2); // for taking extra one newline (means total 2 newline avaialble but fgets() auto send pointer to next newline)
+			date_from_file[strlen(date_from_file) - 1] = 0;
+			time_from_file[strlen(time_from_file) - 1] = 0;
+
+			// printing time
+			if (index == user_rank) // highlighting the user rank in the leaderboard
+			{
+				printf("\033[1;32m----------------------------------------------------------------------------------------\n");
+				printf("\033[1;31m%02d	\033[38;5;190m%02d	\033[38;5;189m%-25s \033[38;5;152m%25s \033[38;5;14m%15s\n\033[0m", index, score_from_file, name_from_file, date_from_file, time_from_file);
+				printf("\033[1;32m----------------------------------------------------------------------------------------\n");
+			}
+			else
+				printf("\033[38;5;142m%02d	\033[38;5;190m%02d	\033[38;5;189m%-25s \033[38;5;152m%25s \033[38;5;14m%15s\n", index, score_from_file, name_from_file, date_from_file, time_from_file);
+
+			/* if index reached at maximum index then we will break the loop because we have    also printed the 'last update date and time' in the database and we have to print them also but they are not in the list
+			 */
+			if (index == maxIndex)
 				break;
-			printf("%c", c);
 		}
+		fgetc(ptr);						 // for reading a newline
+		fgets(name_from_file, 100, ptr); // to print last update time and date
+		printf("\n\033[1;32m%s\033[0m\n", name_from_file);
 	}
 	fclose(ptr);
+	fclose(ptr2);
 
 	white('f');
 	printf("\nThanks Mr. %s.\nBye bye....\nSee you soon.....", user_name);
 	reset();
 }
 
-void arrange_result_database()
+int arrange_result_database()
 {
 	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\result.txt", "r");
 	if (ptr == NULL)
@@ -656,31 +752,100 @@ void arrange_result_database()
 	int *p; // for score_from_file
 	p = (int *)malloc(max_index * sizeof(int));
 
-	char(*p2)[30]; // for name_from_file
-	p2 = (char(*)[30])malloc(max_index * 30 * sizeof(char));
+	// char(*p2)[30]; // for name_from_file
+	// p2 = (char(*)[30])malloc(max_index * 30 * sizeof(char));
+	char **p2 = (char **)malloc(max_index * sizeof(char *));
+	for (int i = 0; i < max_index; i++)
+		p2[i] = (char *)malloc(50 * sizeof(char));
 
 	if (p == NULL || p2 == NULL)
 		printf("Heap memory not available in RAM.");
 	int *save_address = p;
 
 	int i = 0;
-	rewind(ptr); // to point the pointer to beginning of the file
-	while (feof(ptr) == 0)
+	rewind(ptr);							// to point the pointer to beginning of the file
+	while (feof(ptr) == 0 && i < max_index) //&&i<max_index is added and bug fixes because control go one iteration further after reading last then EOF encounter but I have allocated memory for only 1 less than max_index. feof() is the cause of this bug because of one line extra reading. Research about it.
 	{
 		fscanf(ptr, "%d\t%d", &index, &score_from_file);
 		fgetc(ptr); // for taking tab whitespace
 		fgets(name_from_file, 50, ptr);
+		name_from_file[strlen(name_from_file) - 1] = '\0'; // remving trailing newline from string
 		*p = score_from_file;
 		p++;
 		strcpy(p2[i], name_from_file);
 		i++;
+		memset(name_from_file, 0, sizeof(name_from_file));
 	}
 	fclose(ptr);
+	/*This is the last point of execution. I thing there is problem in allocating memory in 2 dimensions*/
 
+	/*modified on 31st Jan 2022 for adding date and time in ordered_leaderboard database*/
+	// start
+	// opening user_played_date.txt which stores original date
+	fflush(stdin);
+	char file_data[100]; // to read data from file
+	FILE *date_ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\user_played_date.txt", "r");
+	if (date_ptr == NULL)
+	{
+		printf("Couldn't open date file. Error code 908\n'");
+		exit(EXIT_FAILURE);
+	}
+
+	// char(*date_from_file)[30] = (char(*)[30])malloc(max_index * 30 * sizeof(char)); // for date string
+	char **date_from_file = (char **)malloc(max_index * sizeof(char *));
+	for (int i = 0; i < max_index; i++)
+		date_from_file[i] = (char *)malloc(30 * sizeof(char));
+
+	i = 0;
+	int temp_data;								 // to tempory store index from file
+	while (feof(date_ptr) == 0 && i < max_index) //&&i<max_index is added and bug fixes because control go one iteration further after reading last then EOF encounter but I have allocated memory for only 1 less than max_index. feof() is the cause of this bug because of one line extra reading. Research about it.
+	{
+		// fgetc(date_ptr);						// for reading index
+		fscanf(date_ptr, "%d", &temp_data);
+		fgetc(date_ptr);				 // for reading space
+		fgets(file_data, 100, date_ptr); // for reading date string
+		// now remving newline added by fgets()
+		file_data[strlen(file_data) - 1] = '\0';
+		strcpy(date_from_file[i++], file_data); // saving date in variable available in memory currently
+	}
+	fclose(date_ptr);
+
+	fflush(stdin);
+	// opening user_played_time.txt which stores original time
+	FILE *time_ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\user_played_time.txt", "r");
+	if (time_ptr == NULL)
+	{
+		printf("Couldn't open time file. Error code 909\n'");
+		exit(EXIT_FAILURE);
+	}
+
+	// char(*time_from_file)[30] = (char(*)[30])malloc(max_index * 30 * sizeof(char)); // for date string
+
+	char **time_from_file = (char **)malloc(max_index * sizeof(char *));
+	for (int i = 0; i < max_index; i++)
+		time_from_file[i] = (char *)malloc(30 * sizeof(char));
+
+	i = 0;
+	while (feof(time_ptr) == 0 && i < max_index) //&&i<max_index is added and bug fixes because control go one iteration further after reading last then EOF encounter but I have allocated memory for only 1 less than max_index. feof() is the cause of this bug because of one line extra reading. Research about it.
+	{
+		// fgetc(time_ptr);
+		fscanf(time_ptr, "%d", &temp_data); // for reading index
+		fgetc(time_ptr);					// for reading whitespace
+		fgets(file_data, 100, time_ptr);	// for reading time string
+		// now remving newline added by fgets()
+		file_data[strlen(file_data) - 1] = '\0';
+		strcpy(time_from_file[i++], file_data); // saving date in variable available in memory currently
+	}
+	fclose(time_ptr);
+	//  end
+	fflush(stdin);
 	int temp;
 	p = save_address;
-	char save_user_name[30]; // to save user name in changing of data
+	char save_user_name[50]; // to save user name in changing of data which save from losing data
+	char save_date[30];		 // save the date temporiraly which save from losing data
+	char save_time[30];		 // save the time temporiraly which save from losing data
 
+	fflush(stdin);
 	// bubble shot algorithm for descending order
 	for (i = 0; i < max_index; i++)
 	{
@@ -695,25 +860,54 @@ void arrange_result_database()
 				strcpy(save_user_name, p2[i]);
 				strcpy(p2[i], p2[j]);
 				strcpy(p2[j], save_user_name);
+
+				strcpy(save_date, date_from_file[i]);
+				strcpy(date_from_file[i], date_from_file[j]);
+				strcpy(date_from_file[j], save_date);
+
+				strcpy(save_time, time_from_file[i]);
+				strcpy(time_from_file[i], time_from_file[j]);
+				strcpy(time_from_file[j], save_time);
 			}
 		}
 	}
-
+	fflush(stdin);
 	// now making new file to print the order data
 	ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\ordered_leaderboard.txt", "w");
+	FILE *ptr2 = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\ordered_date_and_time.txt", "w"); // for saving date and time in sperate file from ordered_leaderboard.txt becasue in that file there will become 3 strings and it's not possible to read them and seperate easily and then compare
 
 	for (int i = 0; i < max_index; i++)
-		fprintf(ptr, "%d\t%d\t%s", i + 1, p[i], p2[i]);
+	{
+		// fprintf(ptr, "%02d\t%02d\t%-20s\t%-10s\t%s\n", i + 1, p[i], p2[i], date_from_file[i], time_from_file[i]);
+		fprintf(ptr, "%02d\t%02d\t%s\n", i + 1, p[i], p2[i]);
+		fprintf(ptr2, "%s\n%s\n\n", date_from_file[i], time_from_file[i]);
+	}
+
+	char *date_now = (char *)calloc(20, sizeof(char));
+	char *time_now = (char *)calloc(20, sizeof(char));
+	today_date(date_now);
+	current_time(time_now);
+	fprintf(ptr, "\nLast time Leaderboard updated on %s at %s\n", date_now, time_now);
 
 	fclose(ptr);
+	fclose(ptr2);
 	free(p);
-	free(p2);
+	// free(p2);
+	for (int i = 0; i < max_index; i++)
+	{
+		free(date_from_file[i]);
+		free(time_from_file[i]);
+		free(p2[i]);
+	}
+	// free(date_from_file);
+	// free(time_from_file);
+	return max_index;
 }
 
 void show_temp_word_history()
 {
-	advcolor('b', 169); // for white background color
-	advcolor('f', 232); // for black foreground color
+	// advcolor('b', 8);  // for white background color
+	advcolor('f', 148); // for black foreground color
 	FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\word game\\temp_user_computer_word", "r");
 	if (ptr == NULL)
 		puts("sorry. No history available till now.");
@@ -748,7 +942,7 @@ void today_date(char *date)
 			i++;
 		}
 		// two newline characters returns after showing time in cmd. So, we have to remove both and add NULL
-		date[i - 2] = '\0'; // to add NULL at end of string for termination conditionk
+		date[i - 3] = '\0'; // to add NULL at end of string for termination conditionk
 	}
 }
 // end
@@ -786,7 +980,6 @@ void save_current_date_time()
 		printf("\nUnable to access database. Exit code 901.\n");
 		exit(EXIT_FAILURE);
 	}
-	char *current_date = (char *)malloc(30);
 	today_date(current_date);
 	int index = 0;
 	char data_from_file[50];
@@ -799,7 +992,6 @@ void save_current_date_time()
 	}
 
 	fprintf(ptr, "%d\t%s\n", ++index, current_date);
-	free(current_date);
 	fclose(ptr);
 
 	// for time
@@ -810,10 +1002,20 @@ void save_current_date_time()
 		printf("\nUnable to access database. Exit code 902.\n");
 		exit(EXIT_FAILURE);
 	}
-	char *present_time = (char *)malloc(30);
 	current_time(present_time);
 
 	fprintf(ptr, "%d\t%s\n", index, present_time);
-	free(current_date);
 	fclose(ptr);
+}
+
+// to display the list of all command that can be used by user inside the game
+void commands()
+{
+	green('f');
+	printf("You can use the following commands in the game anywhere anytime:-\n");
+	advcolor('f', 50);
+	puts("\033[1;34m01. \033[1;36m'#'\033[1;34m for show last words history:");
+	puts("02. \033[1;36m'#clear'\033[1;34m for clear the screen any time.");
+	puts("03. \033[1;36m'#exit' \033[1;34mto giveup or save and exit the game instantly.");
+	puts("04. \033[1;36m'#cmd' \033[1;34mto display this command panel");
 }
