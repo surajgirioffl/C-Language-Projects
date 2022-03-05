@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <time.h>
 #include "D:\\C Language\\All C Programs\\1) Cxxdroid Application\\Header Files\\color.h"
 
 void terms_and_conditions();
-void selection_matrix(); //for tisha yantra
+void selection_matrix(); // for tisha yantra
 void questions_list();
 void save_user(char *user_name, int question_choice);
 void check_user(char *user_name, int question_choice);
@@ -16,6 +17,9 @@ void display_result(int lucky_choice);
 void save_result(char *name, int choice);
 char result[400];
 
+long numberBelow16(long number);
+long randomNumber();
+
 int main()
 {
     green('f');
@@ -24,7 +28,7 @@ int main()
 
     char name[30];
     int question_choice;
-    int lucky_choice;
+    long lucky_choice;
     int restart = 1;
     char choice_for_restart;
 
@@ -33,34 +37,50 @@ int main()
     reset();
     cyan('f');
     puts("Please write your name:");
+    printf("$ ");
     gets(name);
     reset();
 
-    while (1) //for repeating the program till user need
+    while (1) // for repeating the program till user need
     {
         magenta('f');
         puts("\nPlease Select your question from following: (कृपया निम्नलिखित में से अपने प्रश्न का चयन करें:)");
-        questions_list(); //function to print all questions list
+        questions_list(); // function to print all questions list
         printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
         scanf("%d", &question_choice);
         fflush(stdin);
         reset();
 
         FILE *ptr = fopen("D:\\C Language\\All C Programs\\1) Cxxdroid Application\\File IO in C\\future_teller\\user_record.txt", "r");
-        if (ptr != NULL && strcmp(name, "suraj") != 0 && strcmp(name, "suraj kumar giri") != 0 && strcmp(name, "suraj giri") != 0)
+        if (ptr != NULL && strcmp(name, "suraj") != 0 && strcmp(name, "suraj kumar giri") != 0 && strcmp(name, "suraj giri") != 0 && strcmp(name, "dipu") != 0)
             check_user(name, question_choice);
         save_user(name, question_choice);
 
-        puts("\nPlease select any one number from following peacefully after remembering GO (कृपया प्रभु का स्मरण करके शांतिपूर्वक निम्नलिखित में से किसी एक नंबर का चयन करें:)");
-        Beep(1000, 2000);   //Beep(frequnecy, time_in_millisecond);     //for playing a beep sound
-        selection_matrix(); //function to print tisha yantra
+        puts("\nPlease write any number greater than 0 peacefully after remembering The GOD (कृपया प्रभु का स्मरण करके शांतिपूर्वक किसी एक नंबर का चयन करें:)");
+        Beep(1000, 2000); // Beep(frequnecy, time_in_millisecond);     //for playing a beep sound
+        /*
+         *removed display of selection matrix on 4th March 2022
+         *Number must be greater than 0 and all process will be random
+         */
+        // selection_matrix(); // function to print tisha yantra
         printf("\nwrite your choice: (अपनी पसंद लिखें:)\n");
-        scanf("%d", &lucky_choice);
+        scanf("%lu", &lucky_choice);
         fflush(stdin);
-        if (lucky_choice < 1 || lucky_choice > 15)
+        if (lucky_choice <= 0)
         {
             red('f');
-            puts("\nWrong Choice! Selected. So, you are rejected\n");
+            puts("\nWrong Number Entered!. So, you are rejected\n");
+            exit(EXIT_FAILURE);
+        }
+
+        /*now using random operation on 'lucky_choice' to get the number for choice */
+        lucky_choice = numberBelow16(lucky_choice);
+
+        // now checking that number returns by function is in required range or not
+        if (lucky_choice <= 0 || lucky_choice > 15)
+        {
+            red('f');
+            puts("\nSomething went wrong.\nExit code 502");
             exit(EXIT_FAILURE);
         }
 
@@ -221,16 +241,18 @@ void terms_and_conditions()
     fclose(ptr);
 
     char choice[10];
+    printf("\n$ ");
     gets(choice);
     if (strcmp(choice, "yes") == 0 || strcmp(choice, "YES") == 0 || strcmp(choice, "1") == 0)
         goto accepted;
     else
     {
-        printf("\nOK. Bye Bye...........");
+        printf("\nOK. As you wish. Bye Bye...........");
         exit(0);
     }
 accepted:
     fclose(ptr);
+    system("cls");
 }
 
 void save_result(char *name, int choice)
@@ -243,4 +265,32 @@ void save_result(char *name, int choice)
     }
     fprintf(ptr, "%s\t%d\t%s\n", name, choice, result);
     fclose(ptr);
+}
+
+/*added on 4th March 2022*/
+long randomNumber()
+{
+    time_t seed = time(NULL);
+    srand(seed);
+    return rand();
+}
+
+/*take any positive number and returns a random number below 16*/
+long numberBelow16(long number)
+{
+    if (number > 15)
+    {
+        number += randomNumber();
+        int i = 16;
+        while (i > 1)
+        {
+            int r = number % i;
+            if (r == 0)
+                i--;
+            else
+                return r;
+        }
+    }
+    else
+        return number;
 }
