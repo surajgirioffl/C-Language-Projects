@@ -28,7 +28,7 @@ int main()
 
     char name[30];
     int question_choice;
-    long lucky_choice;
+    long lucky_choice = 0;
     int restart = 1;
     char choice_for_restart;
 
@@ -91,7 +91,7 @@ int main()
         save_result(name, question_choice);
 
         red('f');
-        printf("\n=====Currently Mr. %s used this program %d times=====\n", name, restart);
+        printf("\n=====Currently Mr./Mrs %s used this program %d times=====\n", name, restart);
 
         cyan('f');
         printf("\nFor exit press \"#\" otherwise press any key continue:\n");
