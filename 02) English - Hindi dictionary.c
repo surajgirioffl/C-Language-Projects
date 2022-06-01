@@ -31,10 +31,10 @@ unsigned long word_number_for_check; // from file to check the correct word
 
 int main()
 {
-	printf("Hii Dear\U0001F64b\U0001F44b WELCOME TO   \033[1;31m \"ENG-HINDI DICTIONARY \U000000A9\"\033[0m Dev:- Suraj Kumar Giri\n");
+	printf("Hii Dear\U0001F64b\U0001F44b WELCOME TO \033[1;31m\"ENG-HINDI DICTIONARY\U000000A9\"\033[0m Dev:- Suraj Kumar Giri\n");
 	system("pause");
 	char eng_word_user[100];  // from user
-	unsigned short count = 0; // to chech availability of a word
+	unsigned short count = 0; // to check availability of a word
 	FILE *ptr;
 	char again; // to repeat the whole program again
 
@@ -43,7 +43,15 @@ int main()
 		system("cls");
 		cyan('f');
 		puts("write any english word to find it's hindi meaning:");
-		gets(eng_word_user);
+		while (1)
+		{
+			printf("$ ");
+			gets(eng_word_user);
+			if (strcmp(eng_word_user, "\0") == 0)
+				continue;
+			else
+				break;
+		}
 		reset();
 
 		upper_case(eng_word_user); // to convert into uppercase
@@ -125,6 +133,7 @@ int main()
 		puts("==>> Press \'f\' to display searched words history.");
 		puts("==>> Press \'a\' Super User Section (Add Words to dictionary)");
 		puts("==>> Press # for Exit.");
+		puts("==>> Press Enter to continue search.");
 		printf("$ ");
 		scanf("%c", &again);
 		fflush(stdin);
